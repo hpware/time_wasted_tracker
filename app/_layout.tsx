@@ -8,6 +8,7 @@ import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
 import "../style.css";
+import { BitcountGridDouble_400Regular } from "@expo-google-fonts/bitcount-grid-double";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
 
@@ -15,10 +16,10 @@ export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
+    "Bitcount-Grid-Double": BitcountGridDouble_400Regular,
   });
 
   if (!loaded) {
-    // Async font loading only occurs in development.
     return null;
   }
 

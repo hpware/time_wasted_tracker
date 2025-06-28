@@ -33,6 +33,14 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "node_modules/@expo-google-fonts/bitcount-grid-double/400Regular/BitcountGridDouble_400Regular.ttf"
+          ]
+        }
       ]
     ],
     "experiments": {
