@@ -4,16 +4,18 @@ import * as Progress from "react-native-progress";
 export default function HomeScreen() {
   return (
     <View className="items-center justify-center mt-12 flex flex-col">
-      <View>
-        <Text className="text-lg dark:text-white">
+      <View className="flex flex-col items-center justify-center align-middle m-2">
+        <Text className="text-2xl dark:text-white m-3">
           Time wasted on <Text className="font-bitcount">{"something"}</Text>
         </Text>
-        <Progress.Bar progress={0.9} width={200} />
+        <Progress.Circle
+          size={200}
+          progress={0.1}
+          thickness={30}
+          showsText={true}
+          formatText={() => `${10}%`}
+        />
       </View>
-      <Progress.Pie progress={0.4} size={50} />
-      <Text className="text-xl font-bold text-blue-500">
-        Welcome to Nativewind!
-      </Text>
     </View>
   );
 }
