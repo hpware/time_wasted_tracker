@@ -4,6 +4,7 @@ import { supabase } from "@/utils/supabase";
 
 export default function HomeScreen() {
   const [timerStarted, setTimerStarted] = useState<boolean>(false);
+  const [sendingData, setSendingData] = useState<boolean>(false);
   const [time, setTime] = useState(0);
   const [activity, setActivity] = useState("");
   const [savingData, setSavingData] = useState<boolean>(false);
@@ -36,12 +37,10 @@ export default function HomeScreen() {
   const saveTimeEntry = async () => {
     setSavingData(true);
     try {
-      const timeEntry: TimeEntry = {
+      const { error } = await supabase.from("time_entries").insert({
         duration: time,
         activity: activity,
-      };
-
-      const { error } = await supabase.from("time_entries").insert(timeEntry);
+      });
 
       if (error) throw error;
 
@@ -52,6 +51,20 @@ export default function HomeScreen() {
       Alert.alert("Error", "Failed to save time entry");
     } finally {
       setSavingData(false);
+    }
+  };
+  const timerEnableDisable = async () => {
+    if (sendingData) {
+      Alert.alert("Error", "Please DO NOT send more things, please wait...");
+    } else {
+      setSendingData(true);
+      if (timerStarted) {
+        await saveTimeEntry();
+      }
+      console.log(timerStarted);
+      console.log("button pressed");
+      setTimerStarted(!timerStarted);
+      setSendingData(false);
     }
   };
   return (
@@ -68,25 +81,18 @@ export default function HomeScreen() {
           style={({ pressed }) => ({
             opacity: pressed ? 0.7 : 1,
           })}
-          onPress={() => setTimerStarted(!timerStarted)}
+          onPress={() => timerEnableDisable()}
         >
           <Text className="text-white text-lg">
             {timerStarted ? "Stop" : "Start"}
           </Text>
         </Pressable>
-        {timerStarted && (
-          <Pressable
-            className="rounded bg-sky-600/60 p-2 px-5 text-lg"
-            style={({ pressed }) => ({
-              opacity: pressed ? 0.7 : 1,
-            })}
-            onPress={() => saveTimeEntry}
-          >
-            <Text className="text-white text-lg">Submit</Text>
-          </Pressable>
-        )}
-        <Text>Saving Data: {savingData ? "true" : "false"}</Text>
       </View>
+      <Text className="text-blue-600">
+        Saving Data: {savingData ? "true" : "false"}
+      </Text>
+      {/**debugging */}
+      <Text className="text-blue-600">{time}</Text>
     </View>
   );
 }
