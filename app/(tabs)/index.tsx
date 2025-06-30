@@ -1,4 +1,4 @@
-import { View, Text, Pressable } from "react-native";
+import { View, Text, Pressable, Alert } from "react-native";
 import { useState, useEffect } from "react";
 import { supabase } from "@/utils/supabase";
 
@@ -6,12 +6,13 @@ export default function HomeScreen() {
   const [timerStarted, setTimerStarted] = useState<boolean>(false);
   const [time, setTime] = useState(0);
   const [activity, setActivity] = useState("");
+  const [savingData, setSavingData] = useState<boolean>(false);
   // PLACEHOLDER
   useEffect(() => {
     setActivity("something");
   }, []);
   useEffect(() => {
-    let timeInterval;
+    let timeInterval: any;
 
     if (timerStarted) {
       timeInterval = setInterval(() => {
@@ -32,7 +33,27 @@ export default function HomeScreen() {
 
     return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
   };
-  const supabaseSubmit = () => {};
+  const saveTimeEntry = async () => {
+    setSavingData(true);
+    try {
+      const timeEntry: TimeEntry = {
+        duration: time,
+        activity: activity,
+      };
+
+      const { error } = await supabase.from("time_entries").insert(timeEntry);
+
+      if (error) throw error;
+
+      Alert.alert("Success", "Time entry saved successfully!");
+      setTime(0);
+    } catch (error) {
+      console.error("Error saving time entry:", error);
+      Alert.alert("Error", "Failed to save time entry");
+    } finally {
+      setSavingData(false);
+    }
+  };
   return (
     <View className="items-center justify-center mt-12 flex-1">
       <Text className="text-2xl dark:text-white m-3">
@@ -59,11 +80,12 @@ export default function HomeScreen() {
             style={({ pressed }) => ({
               opacity: pressed ? 0.7 : 1,
             })}
-            onPress={() => supabaseSubmit}
+            onPress={() => saveTimeEntry}
           >
             <Text className="text-white text-lg">Submit</Text>
           </Pressable>
         )}
+        <Text>Saving Data: {savingData ? "true" : "false"}</Text>
       </View>
     </View>
   );
