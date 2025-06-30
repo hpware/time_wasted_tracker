@@ -16,7 +16,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.yuanhau.time_wasted_tracker"
     },
     "web": {
       "bundler": "metro",
@@ -45,6 +46,12 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "4d1f27a6-8de4-43df-aab4-fc4fd33657d2"
+      }
     }
   }
 }

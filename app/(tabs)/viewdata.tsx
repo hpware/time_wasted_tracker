@@ -55,7 +55,7 @@ export default function ViewDataScreen() {
             formatText={() => `${String(yearMSPercent).slice(0, 4)}%`}
           />
         </View>
-        <Text className="text-2xl dark:text-white m-3">Time Entries</Text>
+        <Text className="text-2xl  dark:text-white m-3">Time Entries</Text>
         <Pressable onPress={() => setRefreshData(true)}>
           <Text className="dark:text-white text-blue-300">Click to update</Text>
         </Pressable>
