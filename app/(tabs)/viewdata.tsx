@@ -57,7 +57,7 @@ export default function ViewDataScreen() {
         </View>
         <Text className="text-2xl  dark:text-white m-3">Time Entries</Text>
         <Pressable onPress={() => setRefreshData(true)}>
-          <Text className="dark:text-white text-blue-300">Click to update</Text>
+          <Text className="dark:text-white text-blue-700">Click to update</Text>
         </Pressable>
         <View className="w-full p-4">
           {isLoading ? (
@@ -66,7 +66,7 @@ export default function ViewDataScreen() {
             timeWasted.map((entry: TimeEntry) => (
               <Pressable
                 key={entry.id}
-                className="p-4 m-2 bg-gray-600/60 rounded"
+                className="p-4 m-2 bg-gray-500/30 dark:bg-gray-600/60 rounded"
               >
                 <Text className="dark:text-white">
                   Activity: {String(entry.activity)}
