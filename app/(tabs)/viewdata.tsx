@@ -27,14 +27,23 @@ export default function ViewDataScreen() {
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
-      const { data, error } = await supabase.from("time_entries").select("*");
-      console.log("Fetched data:", data); // Debug log
+      const { data, error } = await supabase
+        .from("time_entries")
+        .select("*")
+        .order("created_at", { ascending: false });
       if (!error && data) {
         setTimeWasted(data);
       }
+      const { data: data2, error: error2 } = await supabase
+        .from("total_amount_wasted")
+        .select("total_amount")
+        .eq("username", "default");
+      console.log(data2);
+      if (!error2 && data2) {
+        const percentage = (data2[0].total_amount / yearMS) * 100;
+        setYearMSPercent(Math.max(0, Math.min(100, percentage)));
+      }
       setIsLoading(false);
-      const percentage = (11400044400 / yearMS) * 100;
-      setYearMSPercent(Math.max(0, Math.min(100, percentage)));
     }
     fetchData();
     setRefreshData(false);
@@ -45,15 +54,25 @@ export default function ViewDataScreen() {
       <View className="items-center justify-center mt-12 flex flex-col pb-20">
         <View className="flex flex-col items-center justify-center align-middle m-2">
           <Text className="text-xl dark:text-white m-3">
-            How much time have you wasted in a year?
+            How much time have you wasted in {new Date().getFullYear()}?
           </Text>
-          <Progress.Circle
-            size={200}
-            progress={yearMSPercent / 100}
-            thickness={30}
-            showsText={true}
-            formatText={() => `${String(yearMSPercent).slice(0, 4)}%`}
-          />
+          {!isLoading ? (
+            <Progress.Circle
+              size={200}
+              progress={yearMSPercent / 100}
+              thickness={30}
+              showsText={true}
+              formatText={() => `${String(yearMSPercent).slice(0, 4)}%`}
+            />
+          ) : (
+            <Progress.Circle
+              size={200}
+              progress={0 / 100}
+              thickness={30}
+              showsText={true}
+              formatText={() => `Loading...`}
+            />
+          )}
         </View>
         <Text className="text-2xl  dark:text-white m-3">Time Entries</Text>
         <Pressable onPress={() => setRefreshData(true)}>

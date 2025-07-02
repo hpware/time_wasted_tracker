@@ -7,12 +7,18 @@ export default function HomeScreen() {
   useEffect(() => {
     async function removeAllRowsSupabase() {
       try {
-        const { error } = await supabase
+        const { error: e1 } = await supabase
           .from("time_entries")
           .delete()
           .neq("id", 0);
-        if (error) {
-          Alert.alert("Error", "Failed to delete data: " + error.message);
+        const { error: e2 } = await supabase
+          .from("total_amount_wasted")
+          .update("total_amount", 0)
+          .eq("username", "default");
+        if (e1) {
+          Alert.alert("Error", "Failed to delete data: " + e1.message);
+        } else if (e2) {
+          Alert.alert("Error", "Failed to delete data: " + e2.message);
         } else {
           Alert.alert("Success", "All data has been deleted");
         }

@@ -1,6 +1,6 @@
 import { Tabs } from "expo-router";
 import React from "react";
-import { Platform } from "react-native";
+import { Platform, View } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { HapticTab } from "@/components/HapticTab";
 import TabBarBackground from "@/components/ui/TabBarBackground";
@@ -26,6 +26,7 @@ export default function TabLayout() {
         }),
       }}
     >
+      <View className="h-12"></View>
       <Tabs.Screen
         name="index"
         options={{
